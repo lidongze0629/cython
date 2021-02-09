@@ -19,9 +19,9 @@ class LinesResult(object):
         self.lines = []
         self.s = u""
 
-    def __getitem__(self, s):
+    def __getitem__(self, slices):
         other = copy.deepcopy(self)
-        other.s = other.s[s]
+        other.s = other.s[slices]
         return other
 
     def put(self, s):
@@ -546,7 +546,7 @@ class ExpressionWriter(TreeVisitor):
     def __init__(self, result=None):
         super(ExpressionWriter, self).__init__()
         if result is None:
-            result = u""
+            result = LinesResult()
         self.result = result
         self.precedence = [0]
 
@@ -555,7 +555,7 @@ class ExpressionWriter(TreeVisitor):
         return self.result
 
     def put(self, s):
-        self.result += s
+        self.result.put(s)
 
     def remove(self, s):
         if self.result.endswith(s):
